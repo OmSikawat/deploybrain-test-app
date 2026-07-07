@@ -1,0 +1,35 @@
+name: Fail - Compilation Error
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Write file with syntax error
+        run: |
+          mkdir -p src/main/java/com/testapp
+          cat > src/main/java/com/testapp/BrokenClass.java << 'EOF'
+          package com.testapp;
+
+          public class BrokenClass {
+              // Missing return type — this will not compile
+              public greetUser(String name) {
+                  return "Hello " + name
+              }
+          }
+          EOF
+
+      - name: Compile
+        run: mvn compile
