@@ -1,0 +1,46 @@
+name: Fail - Out Of Memory
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  oom:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Write OOM-triggering code
+        run: |
+          mkdir -p src/main/java/com/testapp
+          cat > src/main/java/com/testapp/OomTrigger.java << 'EOF'
+          package com.testapp;
+
+          import java.util.ArrayList;
+          import java.util.List;
+
+          public class OomTrigger {
+              public static void main(String[] args) {
+                  List<int[]> memoryHog = new ArrayList<>();
+                  while (true) {
+                      // allocate huge arrays repeatedly until heap is exhausted
+                      memoryHog.add(new int[10_000_000]);
+                  }
+              }
+          }
+          EOF
+
+      - name: Compile
+        run: |
+          mkdir -p target/classes
+          javac -d target/classes src/main/java/com/testapp/OomTrigger.java
+
+      - name: Run with constrained heap to force OOM quickly
+        run: java -Xmx64m -cp target/classes com.testapp.OomTrigger
