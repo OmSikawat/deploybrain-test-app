@@ -43,4 +43,4 @@ jobs:
           javac -d target/classes src/main/java/com/testapp/OomTrigger.java
 
       - name: Run with constrained heap to force OOM quickly
-        run: java -Xmx64m -cp target/classes com.testapp.OomTrigger
+        run: java -Xmx256m -cp target/classes com.testapp.OomTrigger
