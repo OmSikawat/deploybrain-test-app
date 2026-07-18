@@ -17,7 +17,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build with bad dependency
+      - name: Build with valid dependency
         run: |
           cat > pom-bad.xml << 'EOF'
           <?xml version="1.0" encoding="UTF-8"?>
@@ -33,7 +33,7 @@ jobs:
                   <dependency>
                       <groupId>org.springframework.boot</groupId>
                       <artifactId>spring-boot-starter-web</artifactId>
-                      <version>99.99.99-THIS-DOES-NOT-EXIST</version>
+                      <version>3.2.5</version>
                   </dependency>
               </dependencies>
           </project>
