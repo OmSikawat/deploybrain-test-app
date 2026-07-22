@@ -10,11 +10,10 @@ class AppTest {
     }
 
     @Test
-void testLargeDataProcessing() {
-    java.util.List<int[]> data = new java.util.ArrayList<>();
-    for (int i = 0; i < 1_000_000; i++) {
-        data.add(new int[10_000]);
+void testRetryLogic() {
+    int attempts = 0;
+    while (attempts >= 0) {  // bug: condition never becomes false
+        attempts++;
     }
-    assertNotNull(data);
 }
 }
