@@ -10,9 +10,10 @@ class AppTest {
     }
 
     @Test
-void testRetryLogic() {
+void testRetryLogic() throws InterruptedException {
     int attempts = 0;
     while (attempts >= 0) {  // bug: condition never becomes false
+        Thread.sleep(120000);
         attempts++;
     }
 }
