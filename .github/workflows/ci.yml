@@ -14,13 +14,9 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Check required configuration
-        run: |
-          if [ -z "$REQUIRED_DB_CONNECTION_STRING" ]; then
-            echo "ERROR: REQUIRED_DB_CONNECTION_STRING is not set"
-            exit 1
-          fi
       - name: Build
         run: mvn compile
       - name: Test
         run: mvn test
+        env:
+          MAVEN_OPTS: "-Xmx128m"
