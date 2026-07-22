@@ -2,6 +2,6 @@ package com.testapp;
 
 public class App {
     public static String greet(String name) {
-        return "Hello " + name  // missing semicolon
+        return "Hello " + name;
     }
 }
