@@ -7,12 +7,19 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
+      - name: Check required configuration
+        run: |
+          if [ -z "$REQUIRED_DB_CONNECTION_STRING" ]; then
+            echo "ERROR: REQUIRED_DB_CONNECTION_STRING is not set"
+            exit 1
+          fi
       - name: Build
         run: mvn compile
       - name: Test
